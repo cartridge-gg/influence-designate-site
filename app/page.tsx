@@ -87,7 +87,7 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
     duration: 5000,
   });
 
-  const { write, status } = useContractWrite({
+  const { write, status, error } = useContractWrite({
     calls: [
       {
         contractAddress:
@@ -121,6 +121,8 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
         successToast();
       }
       case "error": {
+        console.error("Designate contract write error", error);
+
         setMainnetAddr(undefined);
         setIsLoading(false);
 
@@ -132,7 +134,7 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
         return;
       }
     }
-  }, [status, reset, successToast, errorToast]);
+  }, [status, reset, successToast, errorToast, error]);
 
   return (
     <VStack
