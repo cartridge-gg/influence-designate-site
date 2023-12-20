@@ -104,7 +104,7 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
   }, []);
 
   useEffect(() => {
-    if (isLoading || !mainnetAddr) {
+    if (!isLoading || !mainnetAddr) {
       return;
     }
 
@@ -121,6 +121,9 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
         successToast();
       }
       case "error": {
+        setMainnetAddr(undefined);
+        setIsLoading(false);
+
         errorToast();
       }
       case "idle":
