@@ -87,7 +87,7 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
     duration: 5000,
   });
 
-  const { write, status, error } = useContractWrite({
+  const { write, error, isSuccess } = useContractWrite({
     calls: [
       {
         contractAddress:
@@ -112,29 +112,29 @@ function Form({ goerliAddr }: { goerliAddr: string }) {
   }, [isLoading, mainnetAddr, write]);
 
   useEffect(() => {
-    switch (status) {
-      case "success": {
-        setMainnetAddr(undefined);
-        setIsLoading(false);
-
-        reset();
-        successToast();
-      }
-      case "error": {
-        console.error("Designate contract write error", error);
-
-        setMainnetAddr(undefined);
-        setIsLoading(false);
-
-        errorToast();
-      }
-      case "idle":
-      case "loading":
-      default: {
-        return;
-      }
+    if (!error) {
+      return;
     }
-  }, [status, reset, successToast, errorToast, error]);
+
+    setMainnetAddr(undefined);
+    setIsLoading(false);
+
+    errorToast();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
+
+  useEffect(() => {
+    if (!isSuccess) {
+      return;
+    }
+
+    setMainnetAddr(undefined);
+    setIsLoading(false);
+
+    reset();
+    successToast();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, reset]);
 
   return (
     <VStack
