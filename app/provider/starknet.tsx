@@ -9,7 +9,14 @@ import { PropsWithChildren, useMemo } from "react";
 import { RpcProvider } from "starknet";
 
 export function StarknetProvider({ children }: PropsWithChildren) {
-  const connectors = useMemo(() => [new CartridgeConnector()], []);
+  const connectors = useMemo(
+    () => [
+      new CartridgeConnector([], {
+        url: "https://keychain-git-fix-sync.preview.cartridge.gg/",
+      }),
+    ],
+    []
+  );
   const provider = useMemo(
     () =>
       new RpcProvider({
